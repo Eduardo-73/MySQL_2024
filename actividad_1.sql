@@ -1,6 +1,6 @@
-create database if not exists empleados;
+create database if not exists actividad_1;
 
-use empleados;
+use actividad_1;
 /*
 Empleados (pk[numempleado], extelefon, fecnacim, fecingreso, salario, comision, [numce, numde]*)
 Departamento (pk[numdepto, numce*], presupuesto, nomdepto, [deptodepen, centrodepen]*)
