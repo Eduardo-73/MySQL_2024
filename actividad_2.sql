@@ -59,9 +59,7 @@ create table if not exists impartir
     );
     
     alter table profesores
-			drop numjefe,
-        add cf_jefes int not null,
-			drop foreign key fk_prof_jefe,
-		add constraint fk_jefe foreign key (cf_jefes)
-		references profesores (numprof) on delete no action on update cascade;
+		drop foreign key fk_prof_jefe,
+			add constraint fk_jefe foreign key (cf_jefes)
+				references profesores (numprof) on delete no action on update cascade;
         
