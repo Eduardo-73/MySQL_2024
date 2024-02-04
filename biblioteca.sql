@@ -50,5 +50,5 @@ alter table usuarios
     
 alter table libros    
 	drop column paisautor;
-    
+
 drop database if exists biblioteca;
