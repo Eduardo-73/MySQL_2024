@@ -9,7 +9,7 @@ Seguridad(PK[numseguridad], numsala*, numem*)
 Empleados(PK[numem])
 Restauraciones(PK[numrestauraciones, numobras*, numrestauradores*, fecinirest*])
 */
-/*drop database actividad_4;*/
+-- drop database if exists actividad_4;
 create database if not exists actividad_4;
 
 use actividad_4;
@@ -52,11 +52,19 @@ create table if not exists obras
     );
 
 create table if not exists empleados
-	(numemple int,
+(
+	numemple int,
     nomemple varchar(60),
+    ape1em varchar(60),
+    ape2em varchar(60),
+    fecnacimem date,
+    presuem int,
+    comisem int null,
+    extlfem int,
+    numhiem int,
     edademple int,
     constraint pk_empleado primary key (numemple)
-    );
+);
     
 create table if not exists restauradores
 	(numrestaurador int,

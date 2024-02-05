@@ -55,8 +55,8 @@ values
     
 -- actividad 6
 delete from empleados
-where numem = 120;
-
+where salarem = 120;
+-- No puedo borrar usuarios si es la clave foranea y hay datos relacionados
 -- actividad 7
 update empleados
 	set extelem = 910,
