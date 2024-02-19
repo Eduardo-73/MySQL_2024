@@ -37,10 +37,10 @@ commit;
 
 start transaction;
 	delete from casas
-	where codcasa = 5640 and codcasa = 5641;
+		where codcasa = 5640 and codcasa = 5641;
 
 	delete from propietarios
-	where codpropietario = 520;
+		where codpropietario = 520;
 commit;
 
 -- P.5
@@ -51,5 +51,5 @@ start transaction;
 			m2 = 200,
             minpersonas = 4,
             maxpersonas = 8
-	where codcasa = 5789;
+		where codcasa = 5789;
 commit;
