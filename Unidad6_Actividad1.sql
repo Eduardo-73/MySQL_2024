@@ -182,7 +182,17 @@ from empleados join departamentos
 	on empleados.numde = departamentos.numde
 where nomem = 'Juan' and ape1em = 'López'; 		
 
-
+delimiter $$
+create procedure ej14
+	(nombreCentro varchar(120))
+begin 
+	start transaction;
+		select dirce
+		from centros
+		where ltrim(nomce) = nombreCentro;
+    commit;
+end $$ 
+delimiter ;
 
 
 
