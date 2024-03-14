@@ -9,7 +9,6 @@ Días(Pk[coddia], desdia)
 Tramos Horarios(Pk[codtramo], horaini, horafin)
 Salas(Pk[codsala], plazas, datos)
 Horarios(Pk[codhora], plazadisp, fecinihora, fecfinhora, codcli*, codmonitores*, codtipodeporte*, coddia*, codtramo*, codsala*)
-Detalles_Reservas(Pk[coddetreserva, fecreservacli, codreserva*, codhora*, codcli*])
 */
 create database if not exists bodyfitness;
 
@@ -21,6 +20,7 @@ create table if not exists Clientes
     nomcli varchar(60),
     ape1cli varchar(60),
     ape2cli varchar(60),
+    email varchar(120),
     constraint pk_clientes primary key (codcli)
 );
 
@@ -30,6 +30,7 @@ create table if not exists Monitores
     nommonitores varchar(60),
     ape1monitores varchar(60),
     ape2monitores varchar(60),
+    email varchar(120),
     constraint pk_monitores primary key (codmonitores)
 );
 
@@ -107,21 +108,6 @@ create table if not exists Reservas
 			on delete no action on update cascade
 );
 
-create table if not exists Detalles_Reservas
-(
-	coddetreserva int,
-    fecreservacli date,
-    codreserva int,
-    codhora int,
-    codcli int,
-    constraint pk_det_reserva primary key (coddetreserva, fecreservacli, codreserva, codhora, codcli),
-    constraint fk_det_reserva_hora foreign key(codreserva, codhora)
-		references Reservas(codreserva, codhora)
-			on delete no action on update cascade,
-	constraint fk_det_cli foreign key(codcli)
-		references Clientes(codcli)
-			on delete no action on update cascade
-);
 
 
 
