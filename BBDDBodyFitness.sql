@@ -18,7 +18,8 @@ use bodyfitness;
 create table if not exists Clientes
 (
 	codcli int,
-    nomcli varchar(60),
+    nomcli varchar(60)
+    ,
     ape1cli varchar(60),
     ape2cli varchar(60),
     constraint pk_clientes primary key (codcli)

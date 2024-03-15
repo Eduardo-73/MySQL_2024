@@ -30,3 +30,19 @@ delimiter ;
 
 call ej_3('2010/1/2','2010/4/2');
 
+-- P4
+drop procedure ej_4;
+delimiter $$
+create procedure ej_4
+	(in nombreObra varchar(120))
+begin
+	start transaction;
+		select ifnull(artistas.nomartista, 'obra anónima')
+        from obras join artistas on
+			obras.codartista = artistas.codartista
+		where obras.nombreobra = trim(nombreObra);
+    commit;
+end $$
+delimiter ;
+
+call ej_4('El Guernica');
