@@ -30,6 +30,7 @@ delimiter ;
 
 call ej_3('2010/1/2','2010/4/2');
 
+<<<<<<< HEAD
 -- P4
 drop procedure ej_4;
 delimiter $$
@@ -46,3 +47,6 @@ end $$
 delimiter ;
 
 call ej_4('El Guernica');
+=======
+-- 
+>>>>>>> origin/main
