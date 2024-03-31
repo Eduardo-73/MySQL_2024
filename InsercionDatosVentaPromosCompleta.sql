@@ -35,7 +35,23 @@ alter table vendedores
 			on delete no action on update cascade;
 
 update vendedores
-	set nomvende = 'Azucena Muñoz',
-		codem = 480
+	set nomvende = 'Azucena Muñoz'
 where nomvende = 'Maria';
-    
+
+update vendedores
+	set nomvende = ' Mario Lasa'
+where nomvende = 'Pedro';
+
+update vendedores
+	set nomvende = 'Cornelio Sanz'
+where nomvende = 'Germán';
+
+update vendedores 
+	set nomvende = 'Julia Vargas'
+where nomvende = 'Anaís';
+
+update vendedores v join empleados e 
+	on v.codem = e.numem
+	set v.codem = e.numem
+where v.codem is null;
+	  
