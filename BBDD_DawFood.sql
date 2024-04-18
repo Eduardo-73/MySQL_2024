@@ -1,3 +1,4 @@
+drop database if exists dawfood;
 create database dawfood;
 
 use dawfood;
@@ -10,23 +11,14 @@ create table if not exists TPVS
     constraint pk_TPVS primary key (numSerie)
 );
 
-create table if not exists Categorias
+create table if not exists SubCategorias
 (
-	codCat int not null,
+	codtipo int not null,
     tipoCat enum ('Comidas', 'Bebidas', 'Postres'),
-    constraint pk_Categorias primary key(codCat)
-);
-
-create table if not exists Tipos_Productos
-(
-	codSubCat int not null,
     tipoSubCat enum ('Ensaladas', 'Carnes', 'Pescados', 'Refrescos', 'Alcohol',
 				'Cafes', 'Postres'),
-    codCat int,
-    constraint pk_TP primary key (codSubCat),
-    constraint fk_TP_Cat foreign key (codCat)
-		references Categorias (codCat)
-			on delete no action on update cascade
+    descrip varchar(120),
+    constraint pk_Categorias primary key(codtipo)
 );
 
 create table if not exists Tickets
@@ -53,7 +45,7 @@ create table if not exists Productos
 	stock int,
     constraint pk_Productos primary key(id),
     constraint fk_Prod_Cat foreign key(codCat)
-		references Categorias (codCat)
+		references SubCategorias (codtipo)
 			on delete no action on update cascade
 );
 

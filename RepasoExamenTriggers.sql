@@ -278,7 +278,7 @@ from empleados
 where numde in (select empleados.numde
 				from empleados join departamentos on
 						empleados.numde = departamentos.numde
-				where nomem = 'Pilar' or nomem = 'Dorotea')
+				where nomem = 'Pilar' or nomem = 'Dorotea')    
 order by nomem;
 
 /*
