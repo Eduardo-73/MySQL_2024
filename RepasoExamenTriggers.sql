@@ -294,3 +294,66 @@ where numhiem in (select empleados.numhiem
                     group by numhiem
                     having count(*) > 1)
 group by nomem;
+
+/* Preparamos función para asignar user por defecto:*/
+drop function if exists nuevoUser;
+delimiter $$
+create function nuevoUser
+	(nombre varchar(20), ape1 varchar(20), ape2 varchar(20))
+returns varchar(12)
+
+DETERMINISTIC
+
+begin
+	/*
+    El sistema obtiene el usuario con la siguiente regla:
+        A <== primera letra del nombre + 2
+        B <== 3 primeras letras del primer apellido + 5
+        C <== 3 primeras letras del segundo apellido (o ramdom si no existe) + 5
+        D <== el número de caracteres de su nombre completo
+    CONTRASEÑA = A + B + C + D
+   POR EJEMPLO:
+        PARA EVA TORTOSA SÁNCHEZ
+		A ==> E+2 ==> G
+        B ==> T+5-O+5-R+5 ==> Z-T-W
+        C ==> S+5-A+5-N+5 ==> X-F-S
+        D ==> 12
+        USUARIO: GZTWXFS12
+    */
+	declare apellido2 varchar(20);
+    declare A char(1);
+    declare B, C char(3);
+    declare D int;
+    declare usuario char(10);
+    /* NOTA.- Al utilizar variables y devolver variables, 
+    es necesario usar la función CONVERT para convertir a "CHAR(n)" el resultado de
+    ejecutar CHAR(ASCII(X))
+    En caso contrario, la función devolverá un tipo "blob" del que no podemos ver el resultado
+    */
+    
+    -- PRUEBA EL RESULTADO DE CADA FUNCIÓN POR SEPARADO, POR EJEMPLO, EJECUTA EN EL EDITOR:
+    -- SELECT convert(char(ascii(left('EVA',1))+2),char(1));
+    set A = convert(char(ascii(left(nombre,1))+2),char(1));
+    set B = concat(convert(CHAR(ASCII(LEFT(ape1,1))+5),char(1)),
+				   convert(CHAR(ASCII(substring(ape1,2,1))+5),char(1)),
+				   convert(CHAR(ASCII(substring(ape1,3,1))+5), char(1))
+				  );
+	set apellido2 = ape2;
+    if apellido2 is null then
+		begin
+        -- valor entre 65 y 90 en números enteros: truncate(floor(rand()*(90-65+1)+65),0);
+			set apellido2 = concat(convert(char(truncate(floor(rand()*(90-65+1)+65),0)),char(1)),
+								   convert(char(truncate(floor(rand()*(90-65+1)+65),0)),char(1)),
+                                   convert(char(truncate(floor(rand()*(90-65+1)+65),0)),char(1))
+								   );
+        end;
+	end if;
+    set C = concat(convert(CHAR(ASCII(LEFT(apellido2,1))+5),char(1)),
+				   convert(CHAR(ASCII(substring(apellido2,2,1))+5),char(1)),
+				   convert(CHAR(ASCII(substring(apellido2,3,1))+5),char(1))
+					);
+	set D = len(concat_ws('',nombre,ape1,ape2));
+    return concat(A,B,C,convert(D,char(2)));
+    
+end $$
+delimiter ;
