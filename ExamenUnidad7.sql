@@ -77,7 +77,7 @@ create trigger ej7
 	before insert on alumnos
 for each row
 begin
-	if new.password not rlike '^[^0-9]([a-z]+)([=_?!]+)([0-9]+).{3,}' or
+	if new.nomem not rlike '^[^0-9]([a-z]+)([=_?!]+)([0-9]+).{3,}' or
 		new.email not rlike '@.*([.][a-z]{2,3})$' or
         new.telefono rlike '^[679][0-9]{3} [0-9]{3} [0-9]{3}'
         then
