@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 select zonas.nomzona, count(reservas.fecanulacion) as anuladas,
 	count(reservas.fecanulacion) as efectivas,
 		avg(reservas.numdiasestancia) as numdia
@@ -10,8 +10,7 @@ where fecanulacion is not null = codreserva
 	and fecanulacion is null = codreserva
 group by zonas.numzona
 having numdia > 3;
-    
-=======
+
 drop procedure if exists mostrarResVali;  
 delimiter $$
 create procedure mostrarResVali
@@ -57,4 +56,12 @@ as
 
 select * from mostrarResValiView;
 
->>>>>>> origin/main
+select zonas.nomzona, count(reservas.fecanulacion) as efectivas,
+			count(*) - count(fecanulacion) as anuladas,
+				avg(reservas.numdiasestancia) as numdia
+from reservas join casas 
+		on reservas.codcasa = casas.codcasa
+	join zonas
+		on casas.codzona = zonas.numzona
+group by zonas.nomzona
+having numdia > 3;
