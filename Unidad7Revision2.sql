@@ -65,3 +65,19 @@ from reservas join casas
 		on casas.codzona = zonas.numzona
 group by zonas.nomzona
 having numdia > 3;
+
+/*
+Queremos saber cuantas reservas se anulan por periodos de meses, estos es, cuantas
+reservas se anulan un mes antes del inicio de estancia
+cuantas reservas se anulan dos meses antes del inicio de estancia
+*/
+
+select datediff(feciniestancia, fecanulacion) div 30 as meses,
+	count(codreserva) 
+from reservas 
+where fecanulacion is not null
+group by meses
+having meses < 3;
+
+
+
