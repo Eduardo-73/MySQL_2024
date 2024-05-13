@@ -30,4 +30,28 @@ begin
 	end if;
 end $$
 delimiter ;
-	
+
+delimiter $$
+create procedure generarRecibos
+	()
+begin
+	declare contador int default 1;
+    declare anioCli int;
+    declare mesCli int;
+    declare diaCli int;
+    declare totalCli int;
+    declare cursorCli cursor for
+		select codCliente
+        from clientes;
+	set totalCli = (select * from Clientes);
+    open cursorCli;
+		repeat
+			fetch cursorCli into codCLiente;
+			insert into Recibos
+				(codRecibo, codCli, fecRecibo, importeFinal)
+			values
+				();
+        until contador = totalCli end repeat;
+    close cursorCli;
+end $$
+delimiter ;
