@@ -44,13 +44,19 @@ create table if not exists PlanProductos
 drop table if exists Recibos;
 create table if not exists Recibos 
 (
-	codRecibo int,
+	codRecibo int auto_increment,
     codCli int,
+    pagado boolean null,
     fecRecibo date,
+    codEnt int,
+    numCuenta char(16),
     importeFinal decimal(5,2),
     constraint pk_recibo primary key (codRecibo),
     constraint fk_recibo_Cli foreign key (codCli)
 		references Clientes(codCliente)
+			on delete no action on update cascade,
+	constraint fk_recibo_Ent foreign key (codEnt)
+		references Entidades(codEntidad)
 			on delete no action on update cascade
 );
 
