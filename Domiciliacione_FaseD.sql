@@ -9,7 +9,8 @@ begin
     from entidades;
     declare continue handler for sqlstate '02000' set finCursor = true;
     open fichero;
-		
+		repeat
+        
     close fichero;
 end $$
 delimiter ;
