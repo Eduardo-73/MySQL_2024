@@ -118,3 +118,95 @@ begin
     end if;
 end $$
 delimiter ;
+
+/*
+Prepara un procedimiento que devuelva el resultado de una consulta sobre:
+Una base de datos dada.
+Una tabla dada de dicha base de datos.
+El listado de campos de dicha tabla. Dicho listado se pasa separados por comas.
+==> IMPORTANTE QUE UN PROCEDIMIENTO ESTÁ ASOCIADO A UNA BASE DE DATOS
+*/
+
+drop procedure if exists consultaDatos;
+delimiter $$
+create procedure consultaDatos
+	(in bd varchar(60),
+	 in tabla varchar(60),
+	 in campos varchar(120))
+begin 
+	set @procedimiento = concat('select ', campos,
+								' from ', bd, '.', tabla, ';');
+                                
+	prepare proc from @procedimiento;
+    execute proc;
+    deallocate prepare proc;
+    
+end $$
+delimiter ;
+
+call consultaDatos('empresaclase', 'centros', 'numce,nomce');
+
+/* NÚMERO DE CASAS DE LAS QUE SE HAN ANULADO RESERVAS CON MENOS DE 15 DÍAS DE ANTELACIÓN 
+EN CADA ZONA QUE TIENE AL MENOS 10 RESERVAS ANULADAS
+*/
+select zonas.nomzona as nombre, count(*) as numCasas
+from casas join reservas
+		on casas.codcasa = reservas.codcasa
+    join zonas
+		on casas.codzona = zonas.numzona
+where fecanulacion is not null and datediff(feciniestancia,fecanulacion) < 15
+	and zonas.numzona in (select casas.codzona
+						  from reservas join casas
+							on reservas.codcasa = casas.codcasa
+						  where fecanulacion is not null
+                          group by casas.codzona
+                          having count(*) > 10)
+group by nombre;
+
+/* PREPARA UNA VISTA DEL APARTADO ANTERIOR */
+drop view vistasReservas;
+create view vistasReservas		
+as 
+select zonas.nomzona as nombre, count(*) as numCasas
+from casas join reservas
+		on casas.codcasa = reservas.codcasa
+    join zonas
+		on casas.codzona = zonas.numzona
+where fecanulacion is not null and datediff(feciniestancia,fecanulacion) < 15
+	and zonas.numzona in (select casas.codzona
+						  from reservas join casas
+							on reservas.codcasa = casas.codcasa
+						  where fecanulacion is not null
+                          group by casas.codzona
+                          having count(*) > 10)
+group by nombre;
+
+select * from vistasReservas;
+
+/* SABEMOS QUE EN NUESTRA BASE DE DATOS TENEMOS CLIENTES QUE SON TAMBIÉN PROPIETARIOS, PREPARA UNA VISTA 
+EN LA QUE PODAMOS TENER A LOS CLIENTES Y LWOS PROPIETARIOS JUNTOS Y SIN REPETIR
+QUEREMOS MOSTRAR SUS DNIS Y SU NOMBRE */
+
+drop view if exists vistaPropietarios;
+create view vistaPropietarios
+as
+	select distinct concat(clientes.nomcli, ' ', clientes.ape1cli, ' ', ifnull(clientes.ape2cli, '')) as nombreCompleto, 
+		clientes.dnicli as dni
+	from clientes
+    
+    union
+    
+    select distinct nompropietario as nombreCompleto, 
+		dni_cif as dni
+	from propietarios;
+
+select * from vistaPropietarios;
+    
+alter table reservas
+	add column precio int unsigned -- decimal(5,2) check ('> 0');
+
+
+
+
+
+
