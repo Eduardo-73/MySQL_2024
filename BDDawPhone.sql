@@ -49,7 +49,7 @@ create table if not exists Recibos
     pagado boolean null,
     fecRecibo date,
     codEnt int,
-    numCuenta char(16),
+    numCuenta char(22),
     importeFinal decimal(5,2),
     constraint pk_recibo primary key (codRecibo),
     constraint fk_recibo_Cli foreign key (codCli)
