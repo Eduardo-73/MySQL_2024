@@ -70,8 +70,10 @@ USE dawfood;
 		  REFERENCES ticket (IdTicket) ON UPDATE CASCADE
 	);
 
-INSERT INTO tipoproducto (nomCategoria, descripcionCategoria)
-VALUES ('COMIDA', 'Ensalada'),
+INSERT INTO tipoproducto 
+	(nomCategoria, descripcionCategoria)
+VALUES 
+	   ('COMIDA', 'Ensalada'),
 	   ('COMIDA', 'Pastas'),
        ('COMIDA', 'Carnes'),
        
