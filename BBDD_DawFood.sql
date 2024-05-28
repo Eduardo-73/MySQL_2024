@@ -84,7 +84,8 @@ VALUES
        ('POSTRE', 'Tartas');
        
 -- Creacion de los productos
-INSERT INTO productos (precio, stock, IVA, descripcion, IdTipoProducto)
+INSERT INTO productos 
+	(precio, stock, IVA, descripcion, IdTipoProducto)
 VALUES 
     (10.99, 50, 'DIEZ', 'Ensalada César', 1),
     (12.50, 40, 'DIEZ', 'Spaghetti Bolognese', 2),
@@ -95,3 +96,17 @@ VALUES
     (7.00, 80, 'VENTIUNO', 'Roncola', 6),
     
     (5.50, 20, 'DIEZ', 'Tarta de Queso', 7);
+    
+INSERT INTO tpv 
+	(fechaSistema, direccion, contraseña, horaSistema)
+VALUES 
+('2024-05-21', 'Estepona', '1234', '14:30:00');   
+    
+INSERT INTO ticket 
+(codTransaccion, fechaOperacion, horaOperacion, importeTotal, IdTpv) 
+VALUES
+('TXN12345', '2024-05-25', '10:30:00', 100.50, 1),
+('TXN12346', '2024-05-25', '11:00:00', 75.20, 1),
+('TXN12347', '2024-05-26', '12:45:00', 150.00, 1),
+('TXN12348', '2024-05-26', '14:15:00', 200.75, 1),
+('TXN12349', '2024-05-27', '16:00:00', 50.00, 1);
