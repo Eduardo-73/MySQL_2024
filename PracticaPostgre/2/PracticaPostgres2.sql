@@ -1,41 +1,51 @@
 CREATE TABLE empleados (
     idemp SERIAL,
-    nombre VARCHAR(100),
-	ape1 VARCHAR(100),
-	ape2 VARCHAR(100),
+    nombre VARCHAR(100) ,
     puesto VARCHAR(100),
 	CONSTRAINT pk_empleado PRIMARY KEY(idemp)
 );
 
 CREATE TABLE gerentes (
     idgerente SERIAL,
-	nombre VARCHAR(100),
-	ape1 VARCHAR(100),
-	ape2 VARCHAR(100),
     departamento VARCHAR(100),
-	CONSTRAINT pk_gerente PRIMARY KEY(idgerente),
-	idemple INT REFERENCES empleados(idemp)
-);
+	CONSTRAINT pk_gerente PRIMARY KEY(idgerente)
+)INHERITS(empleados);
 
 CREATE TABLE trabajadores (
-   	idtrabajador SERIAL,
-	nombre VARCHAR(100),
-	ape1 VARCHAR(100),
-	ape2 VARCHAR(100),
+    idtrabajador SERIAL,
     salario DECIMAL,
-	CONSTRAINT pk_trabajadores PRIMARY KEY(idtrabajador),
-	idemple INT REFERENCES empleados(idemp)
-);
+	CONSTRAINT pk_trabajadores PRIMARY KEY(idtrabajador)
+)INHERITS(empleados);
 
+CREATE RULE gerent
+AS
+	ON INSERT TO gerentes
+		WHERE EXISTS
+			(SELECT * 
+			 FROM trabajadores
+			 WHERE trabajadores.idemp = NEW.idemp)
+	DO INSTEAD NOTHING;
 
-INSERT INTO empleados
-	(nombre, ape1, ape2, puesto)
-VALUES
-	('Antonio', 'Pérez', 'Montaña', 'Gerente');
+CREATE RULE trabaj
+AS
+	ON INSERT TO trabajadores
+		WHERE EXISTS
+			(SELECT * 
+			 FROM gerentes
+			 WHERE gerentes.idemp = NEW.idemp)
+	DO INSTEAD NOTHING;
 
-INSERT INTO gerentes
-	(nombre, ape1, ape2, departamento, idemple)
-VALUES
-	('Antonio',  'Pérez', 'Montaña', 'Ventas', '1');
+insert into empleados
+	(idemp, nombre, puesto)
+values
+	('1','pepe', 'gerente');
 
-select puesto from empleados where idemp = 1;
+insert into gerentes
+	(idemp, nombre, puesto, departamento)
+values
+	('1', 'Paco', 'gerente', 'i+d');
+
+insert into trabajadores
+	(idemp, nombre, puesto, salario)
+values
+	('1', 'Paco', 'gerente', '3000.00');

@@ -17,21 +17,35 @@ CREATE TABLE trabajadores (
 	CONSTRAINT pk_trabajadores PRIMARY KEY(idtrabajador)
 )INHERITS(empleados);
 
-INSERT INTO gerentes
-	(idemp, nombre, puesto, departamento)
-VALUES
-	('1','Antonio', 'Gerente', 'Ventas');
-
-INSERT INTO trabajadores
-	(idemp, nombre, puesto, salario)
-VALUES
-	('2', 'Paco', 'Trabajador', '3000.00');
-
-CREATE RULE tipoEmple
+CREATE RULE tipoEmpl
 AS
 	ON INSERT TO empleados
+	DO INSTEAD NOTHING;
+
+CREATE RULE gerent
+AS
+	ON INSERT TO gerentes
+		WHERE EXISTS
+			(SELECT * 
+			 FROM trabajadores
+			 WHERE trabajadores.idemp = NEW.idemp)
+	DO ALSO NOTHING;
+
+CREATE RULE trabaj
+AS
+	ON INSERT TO trabajadores
 		WHERE EXISTS
 			(SELECT * 
 			 FROM gerentes
-			 WHERE gerentes.departamento = NEW.departamento)
-	DO INSTEAD NOTHING;
+			 WHERE gerentes.idemp = NEW.idemp)
+	DO ALSO NOTHING;
+
+INSERT INTO gerentes
+	(idemp, nombre, puesto, departamento)
+		values
+	('1', 'Pepe', 'gerente', 'i+d');
+
+insert into trabajadores
+	(idemp, nombre, puesto, salario)
+		values
+	('1', 'Pepe', 'gerente', '3000.00');
